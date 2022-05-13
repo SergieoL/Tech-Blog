@@ -29,7 +29,7 @@ User.init(
             allowNull: false,
             validate: {
                 // this means tha password must be at least 8 characters long
-                len: [4]
+                len: [8]
             }
         }
     },
