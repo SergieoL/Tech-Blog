@@ -49,6 +49,31 @@ router.post('/', (req, res) => {
       });
   });
 
+// login authentication
+router.post('/login', (req ,res) => {
+    // expects {username: 'sergieo', password: 'password1233'}
+    User.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: 'No user with this usrname found.'});
+            return;
+        }
+
+        // Verify user
+        const validPassword = dbUserData.checkPassword(req.body.password);
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect password!' });
+            return;
+          }
+      
+          res.json({ user: dbUserData, message: 'You are now logged in!' });
+        
+    })
+})
+
 // PUT /api/users/1
 router.put('/:id', (req, res) => {
     // expects {username: 'Lernantino' password: 'password1234'}
