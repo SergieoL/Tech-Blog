@@ -5,6 +5,7 @@ const { Post, User } = require('../../models');
 router.get('/', (req, res) => {
   Post.findAll({
     attributes: ['id', 'title', 'content', 'created_at'],
+    order: [['created_at', 'DESC']],
     include: [
       {
         model: User,
@@ -36,6 +37,65 @@ router.get('/:id', (req, res) => {
     .then(dbPostData => {
         if (!dbPostData) {
             res.status(404).json({ message: 'No post found with this id'});
+            return;
+        }
+        res.json(dbPostData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    })
+})
+
+router.post('/', (req, res) => {
+  // expects {title: 'Sergieo is cool', content: 'Sergieo', user_id: 1}
+  Post.create({
+    title: req.body.title,
+    content: req.body.content,
+    user_id: req.body.user_id
+  })
+    .then(dbPostData => res.json(dbPostData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// update a post's title
+router.put('/:id', (req, res) => {
+  Post.update(
+    {
+      title: req.body.title
+    },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+    .then(dbPostData => {
+      if (!dbPostData) {
+        res.status(404).json({ message: 'No post found with this id' });
+        return;
+      }
+      res.json(dbPostData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+// delete a post
+router.delete('/:id', (req, res) => {
+    Post.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    .then(dbPostData => {
+        if (!dbPostData) {
+            res.status(404).json({ message: 'No post found with this id' });
             return;
         }
         res.json(dbPostData);
