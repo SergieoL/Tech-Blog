@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post, Comment } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -20,19 +20,28 @@ router.get('/:id', (req, res) => {
         attributes: { exclude: ['password'] },
         where: {
           id: req.params.id
-        }
-      })
-        .then(dbUserData => {
-          if (!dbUserData) {
-            res.status(404).json({ message: 'No user found with this id' });
-            return;
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ['id', 'title', 'content', 'created_at']
+          },
+          // include the Comment model here:
+          {
+            model: Comment,
+            attributes: ['id', 'comment_text', 'created_at'],
+            include: {
+              model: Post,
+              attributes: ['title']
+            }
           }
-          res.json(dbUserData);
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json(err);
-        });
+        ]
+      })
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
 })
 
 // POST /api/users
@@ -58,7 +67,7 @@ router.post('/login', (req ,res) => {
         }
     }).then(dbUserData => {
         if (!dbUserData) {
-            res.status(400).json({ message: 'No user with this usrname found.'});
+            res.status(400).json({ message: 'No user with this username found.'});
             return;
         }
 
