@@ -3,16 +3,15 @@
   <li>
     <article class="post">
       <div class="title">
-          <h3>{{title}}</h3>
+          <h3>
+              <a href="{{title}}" target="_blank">{{title}}</a>
+          </h3>
           <p>
               {{content}}
           </p>
       </div>
       <div class="meta">
-        on
-        {{created_at}}
-        |
-        <a href="/post/{{id}}">{{comments.length}} comment(s)</a>
+        <p>Posted by {{user.username}} on </p>{{created_at}}
       </div>
     </article>
   </li>

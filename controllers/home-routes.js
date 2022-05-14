@@ -4,6 +4,8 @@ const { Post, User, Comment } = require('../models');
 
 // displays all posts on homepage
 router.get('/', (req, res) => {
+    console.log(req.session);
+
     Post.findAll({
         attributes: [
             'content',
@@ -34,5 +36,18 @@ router.get('/', (req, res) => {
         res.status(500).json(err);
     })
 })
+
+router.get('/login', (req, res) => {
+  if (req.session.loggedIn) {
+    return;
+  }
+
+  res.render('login');
+});
+
+router.get('/signup', (req, res) => {
+    res.render('signup');
+})
+
 
 module.exports = router;
