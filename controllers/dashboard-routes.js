@@ -4,7 +4,7 @@ const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 // show every post from loggedIn user
-router.get('/', withAuth, (req, res) => {
+router.get('/', (req, res) => {
   Post.findAll({
     where: {
       // use the ID from the session
@@ -41,5 +41,35 @@ router.get('/', withAuth, (req, res) => {
       res.status(500).json(err);
     });
 });
+
+// render edit page with single post selectd by id
+router.get('/edit/:id', (req, res) => {
+  Post.findOne({
+    where: {
+      id: req.params.id
+    },
+    attributes: [
+      'id',
+      'title',
+      'content',
+      'created_at'
+    ]
+  })
+  .then(dbPostData => {
+    if (!dbPostData) {
+      res.status(404).json({ message: 'No post found with this id' });
+      return;
+    }
+
+    const post = dbPostData.get({ plain: true });
+
+    res.render('edit-post', { post });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  })
+})
+
 
 module.exports = router;

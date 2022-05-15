@@ -32,7 +32,7 @@ router.post('/', withAuth, (req, res) => {
 });
 
 // delete a comment
-router.delete('/:id', withAuth, (req, res) => {
+router.delete('/:id', (req, res) => {
     Comment.destroy({
         where: {
             id: req.params.id
