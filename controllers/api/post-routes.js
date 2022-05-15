@@ -70,11 +70,12 @@ router.post('/', (req, res) => {
     });
 });
 
-// update a post's title
+// edit a post
 router.put('/:id', (req, res) => {
   Post.update(
     {
-      title: req.body.title
+      title: req.body.title,
+      content: req.body.content
     },
     {
       where: {
