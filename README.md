@@ -14,6 +14,7 @@ https://challenge-14-techblog.herokuapp.com/
 
 -A site to blog and read post about tech and tech related news
 
+<img width="1281" alt="Screenshot" src="https://user-images.githubusercontent.com/98509170/168517359-9dded53c-5b10-4904-b19c-b300506dcdc3.png">
 
 ## Credits
 
