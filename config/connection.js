@@ -10,10 +10,6 @@ if (process.env.JAWSDB_URL) {
   });
 }
 
-
-
-
-
 // // import the Sequelize constructor from the library
 // const Sequelize = require('sequelize');
 
