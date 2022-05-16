@@ -19,6 +19,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const sess = {
   secret: 'Super secret secret',
+  // logs user out after 60 seconds of inactivity 
   cookie: { expires: 60 * 1000 },
   resave: true,
   rolling: true,
